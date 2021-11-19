@@ -88,6 +88,12 @@
   </main>
 
   <script>
+    class NonNumberError extends Error{
+      constructor(message) {
+        super(message);
+        this.name = "NonNumberError";
+      }
+    }
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,14 +101,110 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      //step 3 and 4 of lab
+      try {
+        //throw regular error for first-num
+        if(isNaN(firstNum)) {
+          throw new ReferenceError();
+        }
+        //throw custom error for second-num
+        else if(isNaN(secondNum)){
+          throw new NonNumberError("Not a valid number");
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        
+      } catch (err) {   
+          console.error(err);
+      } finally {
+          console.log('Reached finally block');
+      } 
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    //lab step 2
+    const log = errorBtns[0];
+    log.addEventListener('click', event => {
+      console.log('Console Log Demo');
+    });
+      
+    const error = errorBtns[1];
+    error.addEventListener('click', event => {
+      console.error('Console Error Demo');
+    });
+
+    const count = errorBtns[2];
+    count.addEventListener('click', event => {
+      console.count('Count Number');
+    });
+
+    const warm = errorBtns[3];
+    warm.addEventListener('click', event => {
+      console.warn('Console Warn Button');
+    });
+
+    const assert = errorBtns[4];
+    assert.addEventListener('click', event => {
+      const x = 3;
+      const y = 6;
+      const reason = 'x is expected to be the same as y';
+      console.assert(x == y, {x, y, reason});
+    });
+
+    const clear = errorBtns[5];
+    clear.addEventListener('click', event => {
+      console.clear('Console was cleared');
+    });
+
+    const dir = errorBtns[6];
+    dir.addEventListener('click', event => {
+      console.dir(errorBtns[6]);
+    });
+
+    const dirXml = errorBtns[7];
+    dirXml.addEventListener('click', event => {
+      console.dirxml(errorBtns[7]);
+    });
+
+    const group = errorBtns[8];
+    group.addEventListener('click', event => {
+      console.group("console.group");
+    });
+
+    const groupEnd = errorBtns[9];
+    groupEnd.addEventListener('click', event => {
+      console.groupEnd("console.group");
+    });
+
+    const table = errorBtns[10];
+    table.addEventListener('click', event => {
+      let output = document.querySelector('output');
+      let firstNum = document.querySelector('#first-num').value;
+      let secondNum = document.querySelector('#second-num').value;
+      let operator = document.querySelector('#operator').value;
+      console.table([{firstNum: firstNum, operator: operator, secondNum: secondNum, output: output.innerHTML}]);
+    });
+
+    const timer = errorBtns[11]; 
+    timer.addEventListener('click', event => {
+      console.time();
+    });
+
+    const endTimer = errorBtns[12]; 
+    endTimer.addEventListener('click', event => {
+      console.timeEnd();
+    });
+
+    const trace = errorBtns[13]; 
+    trace.addEventListener('click', event => {
+      const deep = () => { deeper(); };
+      const deeper = () => { deepest(); };
+      const deepest = () => { console.trace(); };
+      deep();
+    });
   </script>
 </body>
-
 </html>
